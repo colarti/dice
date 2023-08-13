@@ -1,8 +1,6 @@
 import random
-import keyboard
 
 class Dice:
-
     def __init__(self, quantity, sides):
         self.dices = quantity
         self.sides = sides
@@ -31,10 +29,20 @@ class Dice:
 
         self.last_roll[index] = random.randrange(1, self.sides+1)
 
+    def roll_total(self):
+        if len(self.last_roll) == 0:
+            print(f'ERR: No Roll establish, call roll() first')
+            return -2
+        
+        return sum(self.last_roll)
+
+
+
+
 if __name__ == '__main__':
     print('Dice Application')
     
-    game = Dice(4,9)
+    game = Dice(2,20)
     print(game)
 
     game.roll_index(3)
@@ -47,3 +55,5 @@ if __name__ == '__main__':
 
     game.roll_index(7)
     print(f'last roll: {game.last_roll}')
+
+    print(f'total roll {game.last_roll} -- {game.roll_total()}')
