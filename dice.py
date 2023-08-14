@@ -9,6 +9,12 @@ class Dice:
     def __str__(self):
         return f'Dices: {self.dices}   Sides: {self.sides}   Last Roll: {self.last_roll}'
 
+    def __repr__(self):
+        data = ''
+        for i in self.last_roll:
+            data += f'{i}, '
+        return data
+
     def roll(self):
         rolls = []
 
