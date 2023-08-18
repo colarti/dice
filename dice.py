@@ -11,8 +11,11 @@ class Dice:
 
     def __repr__(self):
         data = ''
-        for i in self.last_roll:
-            data += f'{i}, '
+        for x, i in enumerate(self.last_roll):
+            if x == len(self.last_roll)-1:
+                data += f'{i}'
+            else:
+                data += f'{i}, '
         return data
 
     def roll(self):
@@ -42,7 +45,25 @@ class Dice:
         
         return sum(self.last_roll)
 
+    def roll_unique(self):
+        rolls = []
 
+        if self.dices > self.sides:
+            print(f'ERR: Number of Dices is more than Sides, cant create unique rolls')
+            return -3
+
+        for i in range(self.dices):
+            roll = random.randrange(1, self.sides+1)
+
+            while True:
+                if roll not in rolls:
+                    rolls.append(roll)
+                    break
+                else:
+                    roll = random.randrange(1, self.sides+1)
+
+        self.last_roll = rolls
+        return rolls
 
 
 if __name__ == '__main__':
@@ -63,3 +84,9 @@ if __name__ == '__main__':
     print(f'last roll: {game.last_roll}')
 
     print(f'total roll {game.last_roll} -- {game.roll_total()}')
+
+    game2 = Dice(12, 12)
+    print(game2)
+
+    print(f'last roll: {game2.roll_unique()}')
+    
