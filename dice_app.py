@@ -14,10 +14,11 @@ class DiceApp(ctk.CTk):
         self.varDice = ctk.StringVar(value='# of Dices')
         self.varSide = ctk.StringVar(value='# of Sides')
         self.varLastRoll = ctk.StringVar(value='Result')
+        self.varUnique = ctk.BooleanVar(value=False)
 
         mainFrame = ctk.CTkFrame(self)
         mainFrame.rowconfigure((0,1,2), weight=1, uniform='a')
-        mainFrame.columnconfigure((0,1), weight=1, uniform='a')
+        mainFrame.columnconfigure((0,1,2), weight=1, uniform='a')
         mainFrame.pack(fill='both', expand=True)
 
         txtDices = ctk.CTkEntry(mainFrame, font=FONT, placeholder_text='# of Dices', justify='center', textvariable=self.varDice)
@@ -26,11 +27,14 @@ class DiceApp(ctk.CTk):
         txtSides = ctk.CTkEntry(mainFrame, font=FONT, placeholder_text='# of Sides', justify='center', textvariable=self.varSide)
         txtSides.grid(row=0, column=1, sticky='news')
 
+        checkUnique = ctk.CTkCheckBox(mainFrame, text='Unique', state=tk.NORMAL, variable=self.varUnique)
+        checkUnique.grid(row=0, column=2, sticky='news')
+
         btnRoll = ctk.CTkButton(mainFrame, text='Roll', font=FONT, command=self.roll_dices)
-        btnRoll.grid(row=1, column=0, columnspan=2, sticky='news')
+        btnRoll.grid(row=1, column=0, columnspan=3, sticky='news')
 
         lblRolls = tk.Label(mainFrame, font=FONT, textvariable=self.varLastRoll)
-        lblRolls.grid(row=2, column=0, columnspan=2, sticky='news')
+        lblRolls.grid(row=2, column=0, columnspan=3, sticky='news')
 
         self.bind('<Shift-Escape>', quit)
         self.mainloop()
@@ -60,6 +64,12 @@ class DiceApp(ctk.CTk):
             self.varLastRoll.set('No Dices to Roll')
         elif numOfSides == 0:
             self.varLastRoll.set('No Sides on Dices')
+        elif numOfDices > numOfSides and self.varUnique.get() == True:
+            self.varLastRoll.set('Dices greater than Sides')
+        elif self.varUnique.get() == True:
+            dice = Dice(numOfDices, numOfSides)
+            dice.roll_unique()
+            self.varLastRoll.set(dice.__repr__())
         else:
             dice = Dice(numOfDices, numOfSides)
             dice.roll()
